@@ -16,11 +16,10 @@ public class Provider {
     private String email;
     private String address;
 
-    // constructeur vide (obligatoire JPA)
     public Provider() {
     }
 
-    // constructeur avec paramètres
+
     public Provider(String name, String email, String address) {
         this.name = name;
         this.email = email;

@@ -3,6 +3,7 @@ package com.sip.ams.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import com.sip.ams.services.ProviderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -19,7 +20,7 @@ import com.sip.ams.repositories.ProviderRepository;
 public class ProviderController {
 
     @Autowired
-    ProviderRepository providerRepository;
+    ProviderService providerService;
 
     @GetMapping("/")
     @Operation(summary = "Récupération de tous les providers")
@@ -27,7 +28,7 @@ public class ProviderController {
 
     })
     public ResponseEntity<List<Provider>> getAllProviders() {
-        return new ResponseEntity<>((List<Provider>) providerRepository.findAll(), HttpStatus.CREATED);
+        return new ResponseEntity<>(providerService.getAllProvider(), HttpStatus.CREATED);
     }
 
     @PostMapping("/")
@@ -36,7 +37,7 @@ public class ProviderController {
 
     })
     public ResponseEntity<Provider> addProvider(@RequestBody Provider p) {
-        return new ResponseEntity<Provider>(providerRepository.save(p), HttpStatus.CREATED);
+        return new ResponseEntity<Provider>(providerService.saveProvider(p), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -45,7 +46,7 @@ public class ProviderController {
             @ApiResponse(responseCode = "404", description = "Si provider introuvable")
     })
     public ResponseEntity<Provider> getProviderById(@PathVariable Long id) {
-        Optional<Provider> opt = providerRepository.findById(id);
+        Optional<Provider> opt = providerService.getProviderById(id);
         if (opt.isEmpty()) {
             return  ResponseEntity.notFound().build();
         } else {
@@ -59,11 +60,11 @@ public class ProviderController {
             @ApiResponse(responseCode = "404", description = "Si provider introuvable")
     })
     public ResponseEntity<Provider> deleteProvider(@PathVariable Long id) {
-        Optional<Provider> opt = providerRepository.findById(id);
+        Optional<Provider> opt = providerService.getProviderById(id);
         if (opt.isEmpty()) {
             return  ResponseEntity.notFound().build();
         } else {
-            providerRepository.deleteById(id);
+            providerService.deleteProvider(id);
             return  ResponseEntity.noContent().build();
         }
 
@@ -75,7 +76,7 @@ public class ProviderController {
             @ApiResponse(responseCode = "404", description = "Si provider introuvable")
     })
     public ResponseEntity<Provider> updateProvider(@RequestBody Provider p){
-        Optional<Provider> opt = providerRepository.findById(p.getId());
+        Optional<Provider> opt = providerService.getProviderById(p.getId());
         if (opt.isEmpty()) {
             return  ResponseEntity.notFound().build();
         } else {
@@ -83,7 +84,7 @@ public class ProviderController {
             newProvider.setName(p.getName());
             newProvider.setAddress(p.getAddress());
             newProvider.setEmail(p.getEmail());
-            return new ResponseEntity<Provider>(providerRepository.save(newProvider), HttpStatus.OK);
+            return new ResponseEntity<Provider>(providerService.saveProvider(newProvider), HttpStatus.OK);
         }
     }
 

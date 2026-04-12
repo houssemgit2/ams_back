@@ -31,8 +31,8 @@ public class ProviderController {
             @ApiResponse(responseCode = "404", description = "Provider non trouvé"),
 
     })
-    public List<Provider> getAllProviders() {
-        return (List<Provider>) providerRepository.findAll();
+    public ResponseEntity<List<Provider>> getAllProviders() {
+        return new ResponseEntity<>((List<Provider>) providerRepository.findAll(),HttpStatus.CREATED);
     }
 
     @PostMapping("/")

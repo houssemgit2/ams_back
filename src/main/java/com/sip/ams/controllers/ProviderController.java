@@ -69,4 +69,22 @@ public class ProviderController {
 
     }
 
+    @PutMapping("/")
+    @Operation(summary = "Mettre à jour un provider")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Si provider est mis à jour"),
+            @ApiResponse(responseCode = "404", description = "Si provider introuvable")
+    })
+    public ResponseEntity<Provider> updateProvider(@RequestBody Provider p){
+        Optional<Provider> opt = providerRepository.findById(p.getId());
+        if (opt.isEmpty()) {
+            return  ResponseEntity.notFound().build();
+        } else {
+            Provider newProvider= opt.get();
+            newProvider.setName(p.getName());
+            newProvider.setAddress(p.getAddress());
+            newProvider.setEmail(p.getEmail());
+            return new ResponseEntity<Provider>(providerRepository.save(newProvider), HttpStatus.OK);
+        }
+    }
+
 }

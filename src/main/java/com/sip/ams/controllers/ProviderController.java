@@ -47,10 +47,26 @@ public class ProviderController {
     public ResponseEntity<Provider> getProviderById(@PathVariable Long id) {
         Optional<Provider> opt = providerRepository.findById(id);
         if (opt.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return  ResponseEntity.notFound().build();
         } else {
             return new ResponseEntity<>(opt.get(), HttpStatus.OK);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Supprimer un provider")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Si provider est supprimé"),
+            @ApiResponse(responseCode = "404", description = "Si provider introuvable")
+    })
+    public ResponseEntity<Provider> deleteProvider(@PathVariable Long id) {
+        Optional<Provider> opt = providerRepository.findById(id);
+        if (opt.isEmpty()) {
+            return  ResponseEntity.notFound().build();
+        } else {
+            providerRepository.deleteById(id);
+            return  ResponseEntity.noContent().build();
+        }
+
     }
 
 }

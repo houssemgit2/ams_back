@@ -17,6 +17,7 @@ import com.sip.ams.repositories.ProviderRepository;
 
 @RestController
 @RequestMapping("providers")
+@CrossOrigin("*")
 public class ProviderController {
 
     @Autowired

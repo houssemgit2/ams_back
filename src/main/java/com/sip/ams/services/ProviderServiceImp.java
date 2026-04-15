@@ -25,12 +25,12 @@ public class ProviderServiceImp implements ProviderService {
     }
 
     @Override
-    public Optional<Provider> getProviderById(Long id) {
+    public Optional<Provider> getProviderById(int id) {
         return providerRepository.findById(id);
     }
 
     @Override
-    public void deleteProvider(Long id) {
+    public void deleteProvider(int id) {
         providerRepository.deleteById(id);
     }
 

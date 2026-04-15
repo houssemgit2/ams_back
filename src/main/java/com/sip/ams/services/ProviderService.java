@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ProviderService {
     public List<Provider> getAllProvider();
     public Provider saveProvider(Provider provider);
-    public Optional<Provider> getProviderById(Long id);
-    public void deleteProvider(Long id);
+    public Optional<Provider> getProviderById(int id);
+    public void deleteProvider(int id);
     public Provider updateProvider(Provider provider);
 }

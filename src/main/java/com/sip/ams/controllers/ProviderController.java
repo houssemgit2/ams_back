@@ -46,10 +46,10 @@ public class ProviderController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Si provider est trouvé"),
             @ApiResponse(responseCode = "404", description = "Si provider introuvable")
     })
-    public ResponseEntity<Provider> getProviderById(@PathVariable Long id) {
+    public ResponseEntity<Provider> getProviderById(@PathVariable int id) {
         Optional<Provider> opt = providerService.getProviderById(id);
         if (opt.isEmpty()) {
-            return  ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         } else {
             return new ResponseEntity<>(opt.get(), HttpStatus.OK);
         }
@@ -60,13 +60,13 @@ public class ProviderController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Si provider est supprimé"),
             @ApiResponse(responseCode = "404", description = "Si provider introuvable")
     })
-    public ResponseEntity<Provider> deleteProvider(@PathVariable Long id) {
+    public ResponseEntity<Provider> deleteProvider(@PathVariable int id) {
         Optional<Provider> opt = providerService.getProviderById(id);
         if (opt.isEmpty()) {
-            return  ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         } else {
             providerService.deleteProvider(id);
-            return  ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build();
         }
 
     }
@@ -76,12 +76,12 @@ public class ProviderController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Si provider est mis à jour"),
             @ApiResponse(responseCode = "404", description = "Si provider introuvable")
     })
-    public ResponseEntity<Provider> updateProvider(@RequestBody Provider p){
+    public ResponseEntity<Provider> updateProvider(@RequestBody Provider p) {
         Optional<Provider> opt = providerService.getProviderById(p.getId());
         if (opt.isEmpty()) {
-            return  ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         } else {
-            Provider newProvider= opt.get();
+            Provider newProvider = opt.get();
             newProvider.setName(p.getName());
             newProvider.setAddress(p.getAddress());
             newProvider.setEmail(p.getEmail());

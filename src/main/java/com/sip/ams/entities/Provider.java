@@ -10,7 +10,7 @@ public class Provider {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String name;
     private String email;
@@ -32,7 +32,7 @@ public class Provider {
     }
 
     // GETTERS
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

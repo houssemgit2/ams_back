@@ -1,5 +1,6 @@
 package com.sip.ams.controllers;
 
+import com.sip.ams.dto.ArticleDTO;
 import com.sip.ams.entities.Article;
 import com.sip.ams.entities.Provider;
 import com.sip.ams.services.ArticleService;
@@ -32,7 +33,7 @@ public class ArticleController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Succès de get All"), @ApiResponse(responseCode = "404", description = "Article non trouvé"),
     })
     public ResponseEntity<List<Article>> getAllArticles() {
-        return new ResponseEntity<>(articleService.getAllArticles(), HttpStatus.CREATED);
+        return new ResponseEntity<>(articleService.getAllArticles(), HttpStatus.OK);
     }
 
     @PostMapping("/{idProvider}")
@@ -40,7 +41,7 @@ public class ArticleController {
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Succès de addArticle"),
 
     })
-    public ResponseEntity<Article> addArticle(@RequestBody Article a, @PathVariable("idProvider") Long idProvider) {
+    public ResponseEntity<Article> addArticle(@RequestBody Article a, @PathVariable("idProvider") int idProvider) {
         Optional<Provider> optProvider = providerService.getProviderById(idProvider);
         if (optProvider.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -49,6 +50,31 @@ public class ArticleController {
             a.setProvider(provider);
             return new ResponseEntity<>(articleService.saveArticle(a), HttpStatus.CREATED);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Supprimer un article")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Si article est supprimé"),
+            @ApiResponse(responseCode = "404", description = "Si provider introuvable")
+    })
+    public ResponseEntity<Article> deleteArticle(@PathVariable int id) {
+        Optional<Article> opt = articleService.getArticleById(id);
+        if (opt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            articleService.deleteArticle(id);
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @PutMapping("/")
+    @Operation(summary = "Mettre à jour un article")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Si article est mis à jour"),
+            @ApiResponse(responseCode = "404", description = "Si provider introuvable")
+    })
+    public ResponseEntity<Article> updateProvider(@RequestBody ArticleDTO a) {
+
+        return new ResponseEntity<>(articleService.updateArticle(a), HttpStatus.CREATED);
     }
 
 }

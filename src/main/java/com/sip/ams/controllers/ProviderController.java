@@ -1,5 +1,6 @@
 package com.sip.ams.controllers;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,10 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 import com.sip.ams.entities.Provider;
 import com.sip.ams.repositories.ProviderRepository;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("providers")
-@CrossOrigin("*")
+
 public class ProviderController {
 
     @Autowired
@@ -37,8 +39,14 @@ public class ProviderController {
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Succès de addProvider"),
 
     })
-    public ResponseEntity<Provider> addProvider(@RequestBody Provider p) {
-        return new ResponseEntity<Provider>(providerService.saveProvider(p), HttpStatus.CREATED);
+    public Provider create(@RequestParam(name="imageFile") MultipartFile file,
+                           @RequestParam("name") String name,
+                           @RequestParam("email") String email,
+                           @RequestParam("address") String address
+                           //@RequestParam("imageName") String imageName
+    ) throws IOException
+    {
+        return providerService.saveProvider(file,name,email,address);
     }
 
     @GetMapping("/{id}")

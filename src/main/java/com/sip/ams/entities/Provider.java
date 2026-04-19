@@ -13,10 +13,28 @@ public class Provider {
     private int id;
 
     private String name;
-    private String email;
-    private String address;
 
     public Provider() {
+
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    private String email;
+    private String address;
+    private String logo;
+
+    public Provider(String name, String address, String email, String newImageName) {
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.logo = newImageName;
     }
 
 
